@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pay Your Way — Pay $1 or pay what you wish</title>
+<meta name="description" content="Choose your amount, make your payment, and get your brand featured on our live supporter wall.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0a0a0a;--acc:#0B7A5B;--bg:#fafafa;--line:#e5e5e5;--mut:#6b7280}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"Plus Jakarta Sans",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;font-size:16px;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+.narrow{max-width:820px}
+header{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header .row{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;max-width:1100px;margin:0 auto}
+.logo{font-weight:800;text-transform:uppercase;letter-spacing:-.01em;font-size:18px;text-decoration:none}
+nav{display:flex;align-items:center;gap:28px}
+nav a:not(.btn){text-decoration:none;font-size:14px;font-weight:500;color:#555}
+nav a:not(.btn):hover{color:var(--ink)}
+#burger{display:none;background:none;border:0;font-size:26px;cursor:pointer;padding:4px 8px}
+@media(max-width:760px){
+ #burger{display:block}
+ nav{display:none;position:absolute;top:100%;left:0;right:0;background:#fff;border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;gap:0;padding:8px 20px 18px}
+ nav.open{display:flex}
+ nav a:not(.btn){padding:12px 0;font-size:16px}
+ nav .btn{margin-top:8px}
+}
+.btn{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:999px;padding:12px 24px;font:inherit;font-size:14px;font-weight:700;letter-spacing:.02em;cursor:pointer;text-decoration:none;transition:.15s;background:#fff;color:var(--ink);border:1px solid #d4d4d4}
+.btn:hover{border-color:var(--ink)}
+.btn.pri{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn.pri:hover{background:var(--acc);border-color:var(--acc)}
+.btn.acc{background:var(--acc);color:#fff;border-color:var(--acc)}
+.btn.acc:hover{background:var(--ink);border-color:var(--ink)}
+.btn.dan{background:#dc2626;color:#fff;border-color:#dc2626}
+.btn.sm{padding:8px 14px;font-size:12px}
+.btn.full{width:100%}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.hero{padding:72px 0 40px}
+.hero h1{font-size:clamp(40px,8vw,84px);font-weight:800;line-height:1.02;letter-spacing:-.03em;text-transform:uppercase;max-width:15ch}
+.hero p.sub{margin-top:22px;font-size:20px;color:#555;max-width:640px}
+.hero p.small{margin-top:14px;font-size:14px;color:var(--mut)}
+.hero .btn{margin-top:30px;padding:16px 34px;font-size:16px}
+.card{background:#fff;border:1px solid var(--line);border-radius:24px;box-shadow:0 8px 30px rgba(0,0,0,.05)}
+#flow{max-width:560px;margin:0 auto;padding:28px}
+h2.t{font-size:clamp(26px,4vw,34px);font-weight:800;letter-spacing:-.02em;text-transform:uppercase;margin-bottom:22px}
+h2.f{font-size:24px;font-weight:800;letter-spacing:-.02em}
+label,.lab{display:block;font-size:14px;font-weight:600;color:#404040;margin:18px 0 6px}
+input,select,textarea{width:100%;border:1px solid #d4d4d4;border-radius:12px;padding:12px 14px;font:inherit;background:#fff;color:var(--ink)}
+input:focus,select:focus,textarea:focus{border-color:var(--ink);outline:2px solid rgba(11,122,91,.25)}
+input[type=checkbox],input[type=radio]{width:20px;height:20px;accent-color:var(--acc);padding:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chk{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:500;margin:16px 0 0;color:var(--ink)}
+.err{color:#dc2626;font-size:14px;font-weight:600;margin-top:14px;min-height:0}
+.step{font-size:12px;font-weight:700;color:var(--mut)}
+.box{background:#f3f4f6;border-radius:16px;padding:16px;font-size:14px;font-weight:500;white-space:pre-wrap;word-break:break-word;margin-top:14px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:520px){.row2{grid-template-columns:1fr}}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px}
+@media(max-width:640px){.stats{grid-template-columns:1fr}}
+.stat{padding:20px 22px}
+.stat b{display:block;font-size:30px;font-weight:800;letter-spacing:-.02em}
+.stat span{font-size:13px;color:var(--mut)}
+.list{overflow:hidden}
+.item{display:flex;justify-content:space-between;gap:16px;padding:16px 22px;border-bottom:1px solid #f0f0f0}
+.item:last-child{border:0}
+.item .n{font-size:18px;font-weight:800;word-break:break-word}
+.item .m{font-size:14px;color:var(--mut);word-break:break-word}
+.item .r{text-align:right;flex-shrink:0}
+.item .r b{color:var(--acc)}
+.item .r span{display:block;font-size:12px;color:var(--mut)}
+.empty{padding:40px 24px;text-align:center;color:var(--mut)}
+.rank{font-weight:800;color:var(--mut);min-width:36px;font-size:14px;padding-top:4px}
+.rank.r1{color:#b45309}
+.item.top1{background:#fffbeb}
+.toast{background:#ecfdf5;border:1px solid rgba(11,122,91,.3);color:var(--acc);font-weight:700;font-size:14px;padding:12px 18px;border-radius:16px;margin-bottom:14px;animation:pop .45s ease}
+@keyframes pop{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
+@keyframes flash{from{background:#d1fae5}to{background:transparent}}
+.fresh{animation:flash 2.5s ease}
+@media(prefers-reduced-motion:reduce){.toast,.fresh{animation:none}html{scroll-behavior:auto}}
+section.s{padding:56px 0}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px;list-style:none}
+.steps li{border-top:3px solid var(--ink);padding-top:14px}
+.steps li i{font-style:normal;font-size:26px;font-weight:800;color:var(--acc);display:block}
+.steps li h3{font-size:18px;margin:2px 0 4px}
+.steps li p{color:#555}
+details{border-bottom:1px solid var(--line);padding:16px 0}
+details:first-of-type{border-top:1px solid var(--line)}
+summary{cursor:pointer;font-weight:700;font-size:17px;list-style:none}
+details p{margin-top:8px;color:#555}
+footer{margin-top:60px;border-top:1px solid var(--line);background:#fff;padding:30px 0;color:var(--mut);font-size:14px}
+.badge{display:inline-block;border-radius:999px;padding:3px 12px;font-size:12px;font-weight:700}
+.b-PENDING{background:#fef3c7;color:#92400e}.b-VERIFIED{background:#d1fae5;color:#065f46}
+.b-REJECTED{background:#fee2e2;color:#991b1b}.b-REFUNDED{background:#e5e5e5;color:#262626}
+.center{text-align:center}
+dl.kv{margin-top:22px;text-align:left;font-size:14px}
+dl.kv div{display:flex;justify-content:space-between;gap:14px;border-bottom:1px solid #f0f0f0;padding:10px 0}
+dl.kv dt{color:var(--mut)}dl.kv dd{font-weight:700;text-align:right;word-break:break-all}
+/* admin */
+body.isadmin header,body.isadmin footer{display:none}
+.atop{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:18px 0}
+.agrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:700px){.agrid{grid-template-columns:1fr 1fr}}
+.filters{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:20px}
+@media(max-width:700px){.filters{grid-template-columns:1fr 1fr}}
+.pcard{padding:18px;margin-bottom:12px}
+.pcard .hd{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.pcard .nm{font-size:18px;font-weight:800;word-break:break-word}
+.pcard .id{font-size:12px;color:var(--mut)}
+.pcard .am{font-size:20px;font-weight:800;text-align:right}
+.pcard .info{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px;font-size:14px;margin-top:10px}
+@media(max-width:560px){.pcard .info{grid-template-columns:1fr}}
+.pcard .info span{color:var(--mut)}
+.pcard .acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.warn{background:#fffbeb;color:#92400e;font-weight:700;font-size:13px;border-radius:10px;padding:8px 12px;margin-top:10px}
+#modal{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.5);display:none;align-items:flex-end;justify-content:center;padding:16px}
+#modal.on{display:flex}
+@media(min-width:600px){#modal{align-items:center}}
+#modal .card{width:100%;max-width:440px;padding:24px;max-height:90vh;overflow:auto}
+#modal h3{font-size:20px;font-weight:800;margin-bottom:10px}
+#modal .btns{display:flex;gap:8px;margin-top:20px}#modal .btns .btn{flex:1}
+#modal img{width:100%;max-height:65vh;object-fit:contain;border-radius:12px}
+.mrow{border:1px solid var(--line);border-radius:16px;padding:14px;margin-top:12px}
+.link{background:none;border:0;color:var(--mut);text-decoration:underline;cursor:pointer;font:inherit;font-size:14px;margin-top:14px}
+.cfgmsg{display:none;background:#fff7ed;border:1px solid #fed7aa;padding:16px;margin:20px;border-radius:12px;font-weight:600}
+</style>
+</head>
+<body>
+<header>
+  <div class="row">
+    <a class="logo" href="#/" id="logo">Pay Your Way</a>
+    <nav id="nav" aria-label="Main">
+      <a href="#/">Home</a><a href="#/supporters">Supporters</a><a href="#/how">How It Works</a><a href="#/faq">FAQ</a>
+      <a class="btn pri" href="#/pay">PAY NOW</a>
+    </nav>
+    <button id="burger" aria-label="Menu" aria-expanded="false">☰</button>
+  </div>
+</header>
+<div class="cfgmsg" id="cfgmsg">Setup needed: open config.js and paste your Supabase key.</div>
+<main id="app"></main>
+<footer><div class="wrap"><b id="fname" style="color:var(--ink);text-transform:uppercase">Pay Your Way</b>
+<p style="margin-top:6px">Payments are manually verified before appearing publicly. Payments are non-refundable unless stated otherwise.</p>
+<p style="margin-top:10px">© <span id="yr"></span></p></div></footer>
+<div id="modal" role="dialog" aria-modal="true"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script>
+/* Your Supabase URL and key now live in config.js (edit that small file, not this one). */
+const CFG = window.PYW_CONFIG || {};
+const SUPABASE_URL = CFG.url || 'https://dckbmtuvtddckdrwndcq.supabase.co';
+const SUPABASE_ANON_KEY = CFG.key || 'PASTE_YOUR_ANON_KEY';
+/* ============================================== */
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money = (n, c = 'USD') => { n = Number(n); const t = Number.isInteger(n) ? String(n) : n.toFixed(2); return c === 'USD' ? '$' + t : t + ' ' + c; };
+const ago = iso => { const s = Math.max(0, (Date.now() - new Date(iso)) / 1000); if (s < 60) return 'Just now'; if (s < 3600) return Math.floor(s / 60) + ' min ago'; if (s < 86400) return Math.floor(s / 3600) + ' hr ago'; return Math.floor(s / 86400) + ' d ago'; };
+const app = $('#app');
+$('#yr').textContent = new Date().getFullYear();
+
+if (SUPABASE_URL.startsWith('PASTE') || SUPABASE_ANON_KEY.startsWith('PASTE')) {
+  $('#cfgmsg').style.display = 'block';
+  throw new Error('Supabase keys not set');
+}
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let S = null;                       // site settings
+let W = { items: [], stats: { count: 0, total: 0, latest: null }, toast: '', fresh: null, limit: 20 };
+let F = null;                       // payment flow state
+let timers = [];
+const clearTimers = () => { timers.forEach(clearInterval); timers = []; };
+
+const COUNTRIES = [['IN','India'],['BD','Bangladesh'],['PK','Pakistan'],['NP','Nepal'],['LK','Sri Lanka'],['US','United States'],['CA','Canada'],['GB','United Kingdom'],['AU','Australia'],['NZ','New Zealand'],['AE','United Arab Emirates'],['SA','Saudi Arabia'],['QA','Qatar'],['KW','Kuwait'],['OM','Oman'],['BH','Bahrain'],['SG','Singapore'],['MY','Malaysia'],['ID','Indonesia'],['TH','Thailand'],['PH','Philippines'],['VN','Vietnam'],['JP','Japan'],['KR','South Korea'],['CN','China'],['HK','Hong Kong'],['DE','Germany'],['FR','France'],['IT','Italy'],['ES','Spain'],['NL','Netherlands'],['BE','Belgium'],['CH','Switzerland'],['SE','Sweden'],['NO','Norway'],['DK','Denmark'],['FI','Finland'],['IE','Ireland'],['PT','Portugal'],['PL','Poland'],['AT','Austria'],['GR','Greece'],['TR','Turkey'],['RU','Russia'],['UA','Ukraine'],['BR','Brazil'],['MX','Mexico'],['AR','Argentina'],['CL','Chile'],['CO','Colombia'],['ZA','South Africa'],['NG','Nigeria'],['KE','Kenya'],['GH','Ghana'],['EG','Egypt'],['MA','Morocco'],['ET','Ethiopia'],['TZ','Tanzania'],['UG','Uganda'],['XX','Other country']];
+const cName = c => (COUNTRIES.find(x => x[0] === c) || [c, c])[1];
+function guessCountry() {
+  try {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+    if (/Kolkata|Calcutta/i.test(tz)) return 'IN';
+    if (/Dhaka/i.test(tz)) return 'BD';
+    if (/Karachi/i.test(tz)) return 'PK';
+    const m = (navigator.language || '').split('-')[1];
+    if (m && COUNTRIES.some(x => x[0] === m.toUpperCase())) return m.toUpperCase();
+  } catch (e) {}
+  return '';
+}
+// A method shows for a country if its Countries field says ALL, or lists that country's code or name.
+function methodsFor(code) {
+  const name = cName(code).toUpperCase();
+  return (S.payment_methods || []).filter(m => {
+    const t = String(m.countries || 'ALL').split(',').map(x => x.trim().toUpperCase()).filter(Boolean);
+    if (!t.length || t.includes('ALL') || t.includes('*')) return true;
+    return !!code && code !== 'XX' && (t.includes(code) || t.includes(name));
+  });
+}
+const flowInit = () => ({ country: guessCountry(), step: 1, name: '', amount: String((S.suggested_amounts || [])[0] ?? S.min_amount), custom: false, message: '', isPublic: true,
+  method: ((methodsFor(guessCountry())[0]) || {}).name || 'Other', reference: '', file: null, hp: '', paymentId: '', copied: false });
+
+/* ---------- boot ---------- */
+async function boot() {
+  const { data, error } = await sb.from('settings').select('*').eq('id', 1).single();
+  if (error) { app.innerHTML = '<div class="wrap hero"><p>Could not load the site. Did you run setup.sql in Supabase?</p></div>'; return; }
+  S = data; F = flowInit(); applySettings();
+  await loadWall();
+  subscribeWall();
+  route();
+}
+function applySettings() {
+  $('#logo').textContent = S.site_name; $('#fname').textContent = S.site_name;
+  document.title = S.site_name + ' — Pay $' + S.min_amount + ' or pay what you wish';
+}
+
+/* ---------- supporter wall (realtime) ---------- */
+const sortWall = () => { W.items.sort((a, b) => Number(b.amount) - Number(a.amount) || new Date(b.verified_at) - new Date(a.verified_at)); };
+async function loadWall() {
+  const [a, b] = await Promise.all([
+    sb.from('supporters').select('id,display_name,amount,currency,message,verified_at').order('amount', { ascending: false }).order('verified_at', { ascending: false }).limit(200),
+    sb.rpc('get_stats')
+  ]);
+  if (a.data) { W.items = a.data; sortWall(); } if (b.data) W.stats = b.data;
+}
+function subscribeWall() {
+  const refreshStats = async () => { const { data } = await sb.rpc('get_stats'); if (data) { W.stats = data; renderWall(); } };
+  sb.channel('wall')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'supporters' }, p => {
+      const r = p.new; W.items = [r, ...W.items.filter(x => x.id !== r.id)]; sortWall(); W.items = W.items.slice(0, 200); W.fresh = r.id;
+      W.toast = r.display_name + ' just joined the supporter wall'; renderWall(); refreshStats();
+      setTimeout(() => { W.toast = ''; renderWall(); }, 4500);
+    })
+    .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'supporters' }, p => {
+      W.items = W.items.filter(x => x.id !== p.old.id); renderWall(); refreshStats();
+    })
+    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'supporters' }, p => {
+      W.items = W.items.map(x => x.id === p.new.id ? p.new : x); sortWall(); renderWall();
+    }).subscribe();
+  // safety net if the realtime socket is blocked
+  setInterval(async () => { await loadWall(); renderWall(); }, 20000);
+  setInterval(renderWall, 30000);
+}
+function renderWall() {
+  const el = $('#wall'); if (!el) return;
+  const st = W.stats, items = W.items.slice(0, W.limit);
+  el.innerHTML = `
+  <div class="stats">
+    <div class="card stat"><b>${esc(st.count)}</b><span>Verified supporters</span></div>
+    <div class="card stat"><b>${money(st.total, S.currency)}</b><span>Total verified contribution</span></div>
+    <div class="card stat"><b>${st.latest ? money(st.latest, S.currency) : '—'}</b><span>Latest verified payment</span></div>
+  </div>
+  ${W.toast ? `<div class="toast" role="status">🎉 ${esc(W.toast)}</div>` : ''}
+  ${items.length ? `<div class="card list">${items.map((s, i) => `
+    <div class="item ${W.fresh === s.id ? 'fresh' : ''} ${i === 0 ? 'top1' : ''}">
+      <div class="rank ${i === 0 ? 'r1' : ''}">#${i + 1}</div>
+      <div style="flex:1;min-width:0"><div class="n">${esc(s.display_name)}</div>${i === 0 ? '<div class="m" style="font-weight:700;color:#b45309">TOP SUPPORTER</div>' : ''}${S.public_messages && s.message ? `<div class="m">“${esc(s.message)}”</div>` : ''}</div>
+      <div class="r"><b>Paid ${money(s.amount, s.currency)}</b><span>${ago(s.verified_at)}</span></div>
+    </div>`).join('')}</div>` : '<div class="card empty">No verified supporters yet. Be the first one on the wall.</div>'}`;
+}
+
+/* ---------- router ---------- */
+function route() {
+  clearTimers();
+  const parts = location.hash.replace(/^#\/?/, '').split('/');
+  const r = parts[0], arg = parts[1];
+  document.body.classList.toggle('isadmin', r === 'admin');
+  $('#nav').classList.remove('open'); $('#burger').setAttribute('aria-expanded', 'false');
+  if (r === 'supporters') viewSupporters();
+  else if (r === 'status') viewStatus(arg || '');
+  else if (r === 'admin') viewAdmin();
+  else { viewHome(); if (['pay', 'how', 'faq'].includes(r)) setTimeout(() => { const t = document.getElementById(r); t && t.scrollIntoView({ behavior: 'smooth' }); }, 40); else window.scrollTo(0, 0); }
+  if (r !== 'admin') window.scrollTo(0, r === 'pay' || r === 'how' || r === 'faq' ? window.scrollY : 0);
+}
+window.addEventListener('hashchange', route);
+$('#burger').onclick = () => { const o = $('#nav').classList.toggle('open'); $('#burger').setAttribute('aria-expanded', o); };
+
+/* ---------- home ---------- */
+const STEPS = [['Choose your amount', 'Enter your brand or name and pick any amount from the minimum.'], ['Pay manually', 'Send the payment using the displayed method, then click “I have paid”.'], ['Submit your reference', 'Add your transaction ID and an optional screenshot.'], ['Get verified', 'We check the payment. Once verified, your name appears live on the wall, ranked by amount.']];
+const FAQ = [['What is the minimum amount?', 'The minimum is shown in the payment form. You can pay more if you wish.'], ['When does my name appear?', 'After the admin manually verifies your payment. This is never automatic.'], ['Can I stay anonymous?', 'Yes. Turn off “Show my brand/name publicly” and you appear as Anonymous Supporter.'], ['What if my payment is rejected?', 'Your status page will say it could not be verified. Contact us with your reference if you think it is a mistake.'], ['How is the wall ranked?', 'By amount paid. The highest payment sits at #1. If two payments are equal, the newer one is shown first.'], ['Is my payment info public?', 'No. Only your display name, amount and optional message are public. References and screenshots stay private.']];
+
+function viewHome() {
+  W.limit = 20;
+  app.innerHTML = `
+  <div class="wrap hero">
+    <h1>${esc(S.headline)}</h1>
+    <p class="sub">Choose your amount, make your payment, and get your brand featured on our live supporter wall. The higher your payment, the higher your rank.</p>
+    <a class="btn pri" href="#/pay">PAY NOW</a>
+    <p class="small">Payments are manually verified before appearing publicly.</p>
+  </div>
+  <section class="wrap s" id="pay" style="padding-top:20px"><div class="card" id="flow"></div></section>
+  ${S.wall_enabled ? `<section class="wrap narrow s" id="supporters"><h2 class="t">TOP SUPPORTERS</h2><div id="wall"></div></section>` : ''}
+  <section class="wrap s" id="how"><h2 class="t">HOW IT WORKS</h2><ol class="steps">${STEPS.map((s, i) => `<li><i>${i + 1}</i><h3>${s[0]}</h3><p>${s[1]}</p></li>`).join('')}</ol></section>
+  <section class="wrap narrow s" id="faq"><h2 class="t">FAQ</h2>${FAQ.map(f => `<details><summary>${f[0]}</summary><p>${f[1]}</p></details>`).join('')}</section>`;
+  renderFlow(); renderWall();
+}
+function viewSupporters() {
+  W.limit = 200;
+  app.innerHTML = `<div class="wrap narrow s"><h1 class="t" style="font-size:clamp(30px,6vw,44px)">TOP SUPPORTERS</h1>${S.wall_enabled ? '<div id="wall"></div>' : '<div class="card empty">The supporter wall is currently turned off.</div>'}</div>`;
+  renderWall();
+}
+
+/* ---------- payment flow ---------- */
+function renderFlow() {
+  const el = $('#flow'); if (!el) return;
+  const amt = Number(F.amount), ms = methodsFor(F.country);
+  if (ms.length && !ms.some(m => m.name === F.method)) F.method = ms[0].name;
+  const cur = ms.find(m => m.name === F.method);
+  const sug = (S.suggested_amounts || []).map(Number);
+  let h = '';
+  if (F.step < 4) h += `<p class="step">Step ${F.step} of 3</p>`;
+  if (F.step === 1) {
+    h += `<h2 class="f" style="margin-top:6px">MAKE A PAYMENT</h2>
+    <label for="f-name">Brand / Name</label>
+    <input id="f-name" data-f="name" maxlength="60" placeholder="Enter your brand or name" value="${esc(F.name)}">
+    <span class="lab">Amount (${esc(S.currency)})</span>
+    <div class="chips">${sug.map(n => `<button class="btn sm ${!F.custom && amt === n ? 'pri' : ''}" data-act="amt" data-v="${n}">${money(n, S.currency)}</button>`).join('')}
+      <button class="btn sm ${F.custom ? 'pri' : ''}" data-act="custom">Custom</button></div>
+    ${F.custom ? `<input style="margin-top:10px" type="number" inputmode="decimal" min="${S.min_amount}" step="0.01" data-f="amount" placeholder="Enter amount" aria-label="Custom amount" value="${esc(F.amount)}" id="f-custom">` : ''}
+    <label for="f-country">Your country</label>
+    <select id="f-country" data-f="country"><option value="">Select your country</option>${COUNTRIES.map(c => `<option value="${c[0]}" ${F.country === c[0] ? 'selected' : ''}>${esc(c[1])}</option>`).join('')}</select>
+    <p style="font-size:12px;color:var(--mut);margin-top:4px">We show the payment options available for your country.</p>
+    <label for="f-msg">Optional message</label>
+    <input id="f-msg" data-f="message" maxlength="200" placeholder="Write a short message" value="${esc(F.message)}">
+    <label class="chk"><input type="checkbox" data-f="isPublic" ${F.isPublic ? 'checked' : ''}> Show my brand/name publicly</label>
+    <p class="err" id="ferr" role="alert"></p>
+    <button class="btn pri full" style="margin-top:18px" data-act="next1">CONTINUE</button>`;
+  } else if (F.step === 2) {
+    h += `<h2 class="f" style="margin-top:6px">COMPLETE YOUR PAYMENT</h2>
+    <p style="margin-top:8px;color:#555">Send <b>${money(amt, S.currency)}</b> manually using the details below.</p>
+    <span class="lab">Payment options for ${esc(cName(F.country))}</span>
+    <div class="chips">${ms.map(m => `<button class="btn sm ${F.method === m.name ? 'pri' : ''}" data-act="method" data-v="${esc(m.name)}">${esc(m.name)}</button>`).join('')}</div>
+    ${cur ? `<div class="box">${esc(cur.instructions)}${cur.link ? `<br><a href="${esc(cur.link)}" target="_blank" rel="noopener noreferrer" style="color:var(--acc);font-weight:700">Open payment link</a>` : ''}</div>` : '<p style="margin-top:14px;color:var(--mut)">No payment option is available for ${esc(cName(F.country))} yet. Please contact us.</p>'}
+    <div class="chips" style="margin-top:18px"><button class="btn" style="flex:1" data-act="copy">${F.copied ? 'COPIED ✓' : 'COPY PAYMENT DETAILS'}</button><button class="btn acc" style="flex:1" data-act="paid">I HAVE PAID</button></div>
+    <button class="link" data-act="back1">Back</button>`;
+  } else if (F.step === 3) {
+    h += `<h2 class="f" style="margin-top:6px">CONFIRM YOUR PAYMENT</h2>
+    <div class="row2"><div><label for="c-name">Name / Brand</label><input id="c-name" data-f="name" maxlength="60" value="${esc(F.name)}"></div>
+    <div><label for="c-amt">Amount Paid (${esc(S.currency)})</label><input id="c-amt" data-f="amount" type="number" inputmode="decimal" step="0.01" min="${S.min_amount}" value="${esc(F.amount)}"></div></div>
+    <label for="c-ref">Payment Reference / Transaction ID</label>
+    <input id="c-ref" data-f="reference" maxlength="100" placeholder="Enter your payment reference" value="${esc(F.reference)}">
+    <label for="c-method">Payment Method</label>
+    <select id="c-method" data-f="method">${[...methodsFor(F.country).map(m => m.name), 'Other'].map(n => `<option ${F.method === n ? 'selected' : ''}>${esc(n)}</option>`).join('')}</select>
+    <label for="c-file">Payment Screenshot ${S.screenshot_required ? '(required)' : '(optional)'}</label>
+    <input id="c-file" data-f="file" type="file" accept="image/png,image/jpeg,image/webp">
+    <p style="font-size:12px;color:var(--mut);margin-top:4px">PNG, JPG or WEBP, up to 4 MB. Only our admin can see it.</p>
+    <span class="lab">Show name publicly</span>
+    <div style="display:flex;gap:24px;font-size:14px"><label class="chk" style="margin:0"><input type="radio" name="pub" data-f="isPublic" value="1" ${F.isPublic ? 'checked' : ''}> YES</label><label class="chk" style="margin:0"><input type="radio" name="pub" data-f="isPublic" value="0" ${!F.isPublic ? 'checked' : ''}> NO</label></div>
+    <div aria-hidden="true" style="position:absolute;left:-9999px"><input tabindex="-1" autocomplete="off" data-f="hp" name="website"></div>
+    <p class="err" id="ferr" role="alert"></p>
+    <button class="btn pri full" style="margin-top:18px" id="subbtn" data-act="submit">SUBMIT PAYMENT FOR VERIFICATION</button>
+    <button class="link" data-act="back2">Back</button>`;
+  } else {
+    h += `<div class="center"><p style="font-size:40px">⏳</p><h2 class="f" style="margin-top:6px">PAYMENT SUBMITTED</h2>
+    <p style="margin-top:8px;color:#555">Thank you, ${esc(F.name)}.</p>
+    <p style="color:#555">Your payment has been submitted for manual verification.</p>
+    <p style="margin-top:18px"><span class="badge b-PENDING">PENDING VERIFICATION</span></p>
+    <p style="margin-top:16px;font-size:13px;color:var(--mut)">Reference</p>
+    <p style="font:700 18px ui-monospace,monospace;word-break:break-all">${esc(F.paymentId)}</p>
+    <p style="margin-top:14px;font-size:14px;color:#555">Your name will appear on the public supporter wall after verification.</p>
+    <a class="btn pri" style="margin-top:22px" href="#/status/${esc(F.paymentId)}" data-reset="1">CHECK PAYMENT STATUS</a></div>`;
+  }
+  el.innerHTML = h;
+}
+const setErr = m => { const e = $('#ferr'); if (e) e.textContent = m; };
+const rid = n => { const c = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', b = crypto.getRandomValues(new Uint8Array(n)); return [...b].map(x => c[x % c.length]).join(''); };
+const newPid = () => 'PMT-' + new Date().toISOString().slice(0, 10).replace(/-/g, '') + '-' + rid(8);
+
+async function submitPay() {
+  if (F.hp) { F.step = 4; F.paymentId = 'PMT-00000000-00000000'; return renderFlow(); }
+  const amount = Math.round(Number(F.amount) * 100) / 100;
+  if (!F.name.trim()) return setErr('Please enter your brand or name.');
+  if (!(amount >= Number(S.min_amount))) return setErr('Minimum amount is ' + money(S.min_amount, S.currency) + '.');
+  if (!F.reference.trim()) return setErr('Please enter your payment reference.');
+  if (S.screenshot_required && !F.file) return setErr('Please upload your payment screenshot.');
+  if (F.file) {
+    if (F.file.size > 4 * 1024 * 1024) return setErr('Screenshot must be under 4 MB.');
+    if (!['image/png', 'image/jpeg', 'image/webp'].includes(F.file.type)) return setErr('Screenshot must be a PNG, JPG or WEBP image.');
+  }
+  const btn = $('#subbtn'); btn.disabled = true; btn.textContent = 'SUBMITTING…'; setErr('');
+  const pid = newPid(); let path = null;
+  try {
+    if (F.file) {
+      const ext = { 'image/png': 'png', 'image/jpeg': 'jpg', 'image/webp': 'webp' }[F.file.type];
+      path = `${pid}/${rid(16).toLowerCase()}.${ext}`;
+      const up = await sb.storage.from('screenshots').upload(path, F.file, { contentType: F.file.type });
+      if (up.error) throw new Error('Could not upload the screenshot. Try again.');
+    }
+    const { error } = await sb.from('payments').insert({
+      payment_id: pid, contributor_name: F.name.trim(), display_name: F.name.trim(), amount, currency: S.currency, payment_method: F.method,
+      transaction_reference: F.reference.trim(), country: cName(F.country), screenshot_path: path, message: F.message.trim() || null, public_visibility: F.isPublic
+    });
+    if (error) throw new Error(/minimum/i.test(error.message) ? 'Amount is below the minimum.' : 'Could not save your payment. Please try again.');
+    F.paymentId = pid; F.step = 4; renderFlow();
+  } catch (e) { setErr(e.message); btn.disabled = false; btn.textContent = 'SUBMIT PAYMENT FOR VERIFICATION'; }
+}
+
+/* ---------- status page ---------- */
+async function viewStatus(id) {
+  app.innerHTML = '<div class="wrap narrow s"><p class="center" style="color:var(--mut)">Loading…</p></div>';
+  const load = async () => {
+    const { data } = await sb.rpc('payment_status', { p_id: id });
+    if (!data) { app.innerHTML = '<div class="wrap narrow s"><div class="card empty">Payment not found. Check the payment ID.</div></div>'; return; }
+    const V = {
+      PENDING: ['⏳', 'PENDING VERIFICATION', 'Your payment is waiting for verification.'],
+      VERIFIED: ['✓', 'PAYMENT VERIFIED ✓', 'Your payment has been verified successfully.'],
+      REJECTED: ['✕', 'PAYMENT REJECTED', 'Your payment could not be verified.'],
+      REFUNDED: ['↩', 'PAYMENT REFUNDED', 'This payment has been refunded.']
+    }[data.status];
+    const pub = data.status !== 'VERIFIED' ? '' : data.hidden ? 'Not currently displayed' : data.public_visibility ? 'Featured on Supporter Wall' : 'Listed as Anonymous Supporter';
+    const date = new Date(data.verified_at || data.submitted_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    app.innerHTML = `<div class="wrap s" style="max-width:560px"><div class="card center" style="padding:32px">
+      <p style="font-size:40px">${V[0]}</p><h1 class="f" style="font-size:24px;font-weight:800;margin-top:6px">${V[1]}</h1><p style="margin-top:8px;color:#555">${V[2]}</p>
+      <dl class="kv"><div><dt>Brand</dt><dd>${esc(data.contributor_name)}</dd></div><div><dt>Amount</dt><dd>${money(data.amount, data.currency)}</dd></div>
+      <div><dt>Status</dt><dd><span class="badge b-${data.status}">${data.status}</span></dd></div><div><dt>Reference</dt><dd>${esc(data.transaction_reference)}</dd></div>
+      <div><dt>Date</dt><dd>${date}</dd></div>${pub ? `<div><dt>Public status</dt><dd>${pub}</dd></div>` : ''}<div><dt>Payment ID</dt><dd>${esc(data.payment_id)}</dd></div></dl>
+      <a class="btn" style="margin-top:26px" href="#/">Back to home</a></div></div>`;
+    return data.status;
+  };
+  const st = await load();
+  if (st === 'PENDING') timers.push(setInterval(load, 10000));
+}
+
+/* ---------- admin ---------- */
+let A = { payments: [], stats: null, tab: 'payments', status: 'PENDING', method: 'ALL', from: '', q: '' };
+const REASONS = ['Payment not found', 'Incorrect amount', 'Invalid transaction reference', 'Duplicate payment', 'Other'];
+
+async function viewAdmin() {
+  app.innerHTML = '<div class="wrap s"><p class="center" style="color:var(--mut)">Loading…</p></div>';
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) return adminLogin();
+  const { error } = await sb.rpc('admin_stats');
+  if (error) {
+    app.innerHTML = `<div class="wrap narrow s center"><p style="font-weight:700">This account is not an admin.</p><button class="btn pri" style="margin-top:18px" data-act="signout">Sign out</button></div>`; return;
+  }
+  renderAdmin(); await adminLoad();
+  timers.push(setInterval(() => { if (A.tab === 'payments') adminLoad(); }, 15000));
+}
+function adminLogin(msg = '') {
+  app.innerHTML = `<div class="wrap" style="max-width:420px;padding-top:12vh"><div class="card" style="padding:28px">
+    <h1 class="f" style="font-size:24px;font-weight:800">ADMIN LOGIN</h1>
+    <label for="l-email">Email</label><input id="l-email" type="email" autocomplete="username">
+    <label for="l-pass">Password</label><input id="l-pass" type="password" autocomplete="current-password">
+    <p class="err" id="lerr" role="alert">${esc(msg)}</p>
+    <button class="btn pri full" style="margin-top:18px" data-act="login">SIGN IN</button></div></div>`;
+}
+async function adminLoad() {
+  const [p, s] = await Promise.all([
+    sb.from('payments').select('*').order('submitted_at', { ascending: false }).limit(1000), sb.rpc('admin_stats')
+  ]);
+  if (p.error) return;
+  A.payments = p.data; A.stats = s.data;
+  if (A.tab === 'payments') { renderAdminStats(); renderAdminList(); }
+}
+function renderAdmin() {
+  app.innerHTML = `<div class="wrap" style="padding-bottom:60px">
+    <div class="atop"><h1 style="font-size:20px;font-weight:800;text-transform:uppercase">Admin</h1>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn sm ${A.tab === 'payments' ? 'pri' : ''}" data-act="tab" data-v="payments">Payments</button>
+      <button class="btn sm ${A.tab === 'settings' ? 'pri' : ''}" data-act="tab" data-v="settings">Settings</button>
+      <a class="btn sm" href="#/">View site</a><button class="btn sm" data-act="signout">Sign out</button></div></div>
+    <p class="err" id="aerr" role="alert"></p>
+    <div id="atab"></div></div>`;
+  if (A.tab === 'payments') {
+    $('#atab').innerHTML = `<div class="agrid" id="astats"></div>
+    <div class="filters">
+      <select data-af="status" aria-label="Status">${['PENDING', 'VERIFIED', 'REJECTED', 'REFUNDED', 'ALL'].map(x => `<option ${A.status === x ? 'selected' : ''}>${x}</option>`).join('')}</select>
+      <select data-af="method" aria-label="Payment method" id="mfilter"></select>
+      <input type="date" data-af="from" aria-label="From date" value="${esc(A.from)}">
+      <input data-af="q" placeholder="Search name, reference, ID" value="${esc(A.q)}"></div>
+    <h2 id="alisttitle" style="margin:26px 0 12px;font-size:18px;font-weight:800;text-transform:uppercase"></h2><div id="alist"></div>`;
+    renderAdminStats(); renderAdminList();
+  } else renderSettings();
+}
+function renderAdminStats() {
+  const el = $('#astats'); if (!el) return; const s = A.stats || {};
+  const c = (v, l) => `<div class="card stat"><b>${v}</b><span>${l}</span></div>`;
+  el.innerHTML = c(s.pending ?? '…', 'Pending verification') + c(s.verified ?? '…', 'Verified payments') + c(s.total != null ? money(s.total) : '…', 'Total verified') + c(s.today ?? '…', "Today's payments");
+}
+function renderAdminList() {
+  const el = $('#alist'); if (!el) return;
+  const ms = ['ALL', ...new Set(A.payments.map(p => p.payment_method))];
+  const mf = $('#mfilter'); if (mf) mf.innerHTML = ms.map(x => `<option ${A.method === x ? 'selected' : ''}>${esc(x)}</option>`).join('');
+  const q = A.q.toLowerCase();
+  const list = A.payments.filter(p => (A.status === 'ALL' || p.status === A.status) && (A.method === 'ALL' || p.payment_method === A.method) &&
+    (!A.from || new Date(p.submitted_at) >= new Date(A.from)) && (!q || [p.contributor_name, p.transaction_reference, p.payment_id].some(x => x.toLowerCase().includes(q))));
+  $('#alisttitle').textContent = (A.status === 'PENDING' ? 'Pending payments' : 'Payments') + ' (' + list.length + ')';
+  el.innerHTML = list.length ? list.map(p => `
+  <div class="card pcard">
+    <div class="hd"><div><div class="nm">${esc(p.contributor_name)}</div><div class="id">${esc(p.payment_id)} · ${ago(p.submitted_at)}</div></div>
+      <div><div class="am">${money(p.amount, p.currency)}</div><span class="badge b-${p.status}">${p.status}${p.hidden ? ' · HIDDEN' : ''}</span></div></div>
+    <div class="info"><div><span>Method: </span><b>${esc(p.payment_method)}</b></div><div><span>Reference: </span><b style="word-break:break-all;font-family:ui-monospace,monospace">${esc(p.transaction_reference)}</b></div>
+      <div><span>Country: </span><b>${esc(p.country || '—')}</b></div><div><span>Public: </span><b>${p.public_visibility ? 'Yes' : 'No (Anonymous)'}</b></div>
+      ${p.message ? `<div style="grid-column:1/-1"><span>Message: </span>“${esc(p.message)}”</div>` : ''}
+      ${p.admin_note ? `<div style="grid-column:1/-1"><span>Note: </span>${esc(p.admin_note)}</div>` : ''}</div>
+    ${p.duplicate_flag ? '<div class="warn">⚠ This transaction reference was submitted before. Check carefully.</div>' : ''}
+    <div class="acts">
+      ${p.screenshot_path ? `<button class="btn sm" data-act="shot" data-id="${p.id}">VIEW SCREENSHOT</button>` : ''}
+      ${p.status === 'PENDING' ? `<button class="btn sm acc" data-act="mverify" data-id="${p.id}">VERIFY</button><button class="btn sm dan" data-act="mreject" data-id="${p.id}">REJECT</button>` : ''}
+      ${p.status === 'VERIFIED' ? `${p.hidden ? `<button class="btn sm" data-act="restore" data-id="${p.id}">RESTORE</button>` : `<button class="btn sm" data-act="hide" data-id="${p.id}">HIDE FROM WALL</button>`}
+        ${p.message ? `<button class="btn sm" data-act="delmsg" data-id="${p.id}">DELETE MESSAGE</button>` : ''}<button class="btn sm" data-act="refund" data-id="${p.id}">REFUND</button>` : ''}
+      <button class="btn sm" data-act="mnote" data-id="${p.id}">NOTE</button></div></div>`).join('') : '<div class="card empty">Nothing here.</div>';
+}
+const aErr = m => { const e = $('#aerr'); if (e) e.textContent = m || ''; };
+async function doAct(id, action, note) {
+  aErr('');
+  const { error } = await sb.rpc('admin_action', { p_id: id, p_action: action, p_note: note || null });
+  if (error) { aErr(error.message); closeModal(); return false; }
+  closeModal(); await adminLoad(); return true;
+}
+const byId = id => A.payments.find(p => p.id === id);
+const openModal = h => { const m = $('#modal'); m.innerHTML = `<div class="card">${h}</div>`; m.classList.add('on'); };
+const closeModal = () => { const m = $('#modal'); m.classList.remove('on'); m.innerHTML = ''; };
+const info = (k, v) => `<p style="font-size:14px;margin-top:4px"><span style="color:var(--mut)">${k}: </span><b style="word-break:break-all">${esc(v)}</b></p>`;
+
+/* settings tab */
+function renderSettings(cfgIn) {
+  const mount = async () => {
+    let c = cfgIn; if (!c) { const { data } = await sb.from('settings').select('*').eq('id', 1).single(); c = data; }
+    $('#atab').innerHTML = `<div class="card" style="padding:24px;max-width:680px"><h2 class="f" style="text-transform:uppercase">Settings</h2>
+    <label>Website name</label><input id="s-name" value="${esc(c.site_name)}" maxlength="60">
+    <label>Headline</label><input id="s-head" value="${esc(c.headline)}" maxlength="120">
+    <div class="row2"><div><label>Minimum amount</label><input id="s-min" type="number" step="0.01" value="${esc(c.min_amount)}"></div><div><label>Currency</label><input id="s-cur" maxlength="3" value="${esc(c.currency)}"></div></div>
+    <label>Suggested amounts (comma separated)</label><input id="s-sug" value="${esc((c.suggested_amounts || []).join(', '))}">
+    <h3 style="margin-top:24px;font-size:16px">Payment methods</h3>
+    ${c.payment_methods.map((m, i) => `<div class="mrow"><input class="m-name" placeholder="Method name (e.g. Payoneer)" value="${esc(m.name)}">
+      <textarea class="m-ins" rows="3" style="margin-top:8px" placeholder="Payment instructions and account details">${esc(m.instructions)}</textarea>
+      <input class="m-countries" style="margin-top:8px" placeholder="Countries: ALL, or e.g. IN, BD, United States" value="${esc(m.countries || 'ALL')}"><input class="m-link" style="margin-top:8px" placeholder="Payment link (optional)" value="${esc(m.link || '')}"><button class="link" data-act="rmmethod" data-v="${i}" style="color:#dc2626">Remove</button></div>`).join('')}
+    <button class="btn sm" style="margin-top:12px" data-act="addmethod">+ Add method</button>
+    <label class="chk" style="margin-top:22px"><input type="checkbox" id="s-wall" ${c.wall_enabled ? 'checked' : ''}> Supporter wall ON</label>
+    <label class="chk"><input type="checkbox" id="s-msg" ${c.public_messages ? 'checked' : ''}> Show public messages</label>
+    <label class="chk"><input type="checkbox" id="s-shot" ${c.screenshot_required ? 'checked' : ''}> Require screenshot</label>
+    <button class="btn pri" style="margin-top:22px" data-act="savecfg">SAVE SETTINGS</button><p id="smsg" style="margin-top:12px;font-weight:600;font-size:14px"></p></div>`;
+  };
+  mount();
+}
+function readCfg() {
+  return {
+    site_name: $('#s-name').value.trim(), headline: $('#s-head').value.trim(), min_amount: Number($('#s-min').value), currency: $('#s-cur').value.trim().toUpperCase(),
+    suggested_amounts: $('#s-sug').value.split(',').map(x => Number(x.trim())).filter(n => n > 0 && n <= 100000).slice(0, 8),
+    payment_methods: [...document.querySelectorAll('.mrow')].map(r => ({ name: r.querySelector('.m-name').value.trim().slice(0, 40), instructions: r.querySelector('.m-ins').value.slice(0, 1000), link: r.querySelector('.m-link').value.trim().slice(0, 300), countries: (r.querySelector('.m-countries').value.trim() || 'ALL').slice(0, 300) })),
+    wall_enabled: $('#s-wall').checked, public_messages: $('#s-msg').checked, screenshot_required: $('#s-shot').checked
+  };
+}
+
+/* ---------- global events ---------- */
+function onField(e) {
+  const t = e.target;
+  if (t.dataset.af) { A[t.dataset.af] = t.value; renderAdminList(); return; }
+  const k = t.dataset.f; if (!k || !F) return;
+  if (t.type === 'checkbox') F[k] = t.checked;
+  else if (t.type === 'radio') F[k] = t.value === '1';
+  else if (t.type === 'file') F[k] = t.files[0] || null;
+  else F[k] = t.value;
+  if (k === 'country') F.method = ((methodsFor(F.country)[0]) || {}).name || 'Other';
+}
+document.addEventListener('input', onField);
+document.addEventListener('change', onField);
+
+document.addEventListener('click', async e => {
+  const a = e.target.closest('a[href^="#/"]');
+  if (a) { if (a.dataset.reset) { setTimeout(() => { F = flowInit(); }, 0); } if (location.hash === a.getAttribute('href')) route(); return; }
+  if (e.target.id === 'modal') return closeModal();
+  const b = e.target.closest('[data-act]'); if (!b) return;
+  const act = b.dataset.act, v = b.dataset.v, id = b.dataset.id;
+
+  /* payment flow */
+  if (act === 'amt') { F.amount = v; F.custom = false; return renderFlow(); }
+  if (act === 'custom') { F.custom = true; F.amount = ''; renderFlow(); const i = $('#f-custom'); i && i.focus(); return; }
+  if (act === 'next1') {
+    if (!F.name.trim()) return setErr('Please enter your brand or name.');
+    if (!(Number(F.amount) >= Number(S.min_amount))) return setErr('Minimum amount is ' + money(S.min_amount, S.currency) + '.');
+    if (!F.country) return setErr('Please select your country.');
+    F.step = 2; return renderFlow();
+  }
+  if (act === 'method') { F.method = v; return renderFlow(); }
+  if (act === 'copy') {
+    const m = S.payment_methods.find(x => x.name === F.method); if (!m) return;
+    try { await navigator.clipboard.writeText(m.name + '\n' + m.instructions + (m.link ? '\n' + m.link : '')); F.copied = true; renderFlow(); setTimeout(() => { F.copied = false; renderFlow(); }, 1800); } catch (_) {}
+    return;
+  }
+  if (act === 'paid') { F.step = 3; return renderFlow(); }
+  if (act === 'back1') { F.step = 1; return renderFlow(); }
+  if (act === 'back2') { F.step = 2; return renderFlow(); }
+  if (act === 'submit') return submitPay();
+
+  /* admin */
+  if (act === 'login') {
+    const { error } = await sb.auth.signInWithPassword({ email: $('#l-email').value.trim(), password: $('#l-pass').value });
+    if (error) { $('#lerr').textContent = 'Wrong email or password.'; return; }
+    return viewAdmin();
+  }
+  if (act === 'signout') { await sb.auth.signOut(); return adminLogin(); }
+  if (act === 'tab') { A.tab = v; return renderAdmin(); }
+  if (act === 'closeModal') return closeModal();
+  const p = id && byId(id);
+  if (act === 'shot') {
+    const { data, error } = await sb.storage.from('screenshots').createSignedUrl(p.screenshot_path, 60);
+    if (error) return aErr('Could not open the screenshot.');
+    return openModal(`<h3>PAYMENT SCREENSHOT</h3><img src="${esc(data.signedUrl)}" alt="Payment screenshot"><p style="font-size:12px;color:var(--mut);margin-top:8px">This link expires in 60 seconds.</p><div class="btns"><button class="btn" data-act="closeModal">CLOSE</button></div>`);
+  }
+  if (act === 'mverify') return openModal(`<h3>VERIFY PAYMENT?</h3>${info('Brand', p.contributor_name)}${info('Amount', money(p.amount, p.currency))}${info('Reference', p.transaction_reference)}
+    ${p.duplicate_flag ? '<div class="warn">⚠ Duplicate reference flagged.</div>' : ''}<p style="font-size:14px;color:#555;margin-top:12px">Only verify after you see this payment in your payment account.</p>
+    <div class="btns"><button class="btn" data-act="closeModal">CANCEL</button><button class="btn acc" data-act="doverify" data-id="${p.id}">VERIFY PAYMENT</button></div>`);
+  if (act === 'doverify') { b.disabled = true; b.textContent = 'VERIFYING…'; return doAct(id, 'VERIFY'); }
+  if (act === 'mreject') return openModal(`<h3>REJECT PAYMENT</h3>${info('Brand', p.contributor_name)}${info('Amount', money(p.amount, p.currency))}
+    <label for="r-reason">Reason</label><select id="r-reason">${REASONS.map(r => `<option>${r}</option>`).join('')}</select>
+    <label for="r-note">Note (optional)</label><input id="r-note" maxlength="300">
+    <div class="btns"><button class="btn" data-act="closeModal">CANCEL</button><button class="btn dan" data-act="doreject" data-id="${p.id}">REJECT PAYMENT</button></div>`);
+  if (act === 'doreject') { const n = $('#r-note').value.trim(); return doAct(id, 'REJECT', $('#r-reason').value + (n ? ': ' + n : '')); }
+  if (act === 'mnote') return openModal(`<h3>ADMIN NOTE</h3><textarea id="n-text" rows="4" maxlength="500">${esc(p.admin_note || '')}</textarea>
+    <div class="btns"><button class="btn" data-act="closeModal">CANCEL</button><button class="btn pri" data-act="donote" data-id="${p.id}">SAVE NOTE</button></div>`);
+  if (act === 'donote') return doAct(id, 'NOTE', $('#n-text').value);
+  if (act === 'hide') return doAct(id, 'HIDE');
+  if (act === 'restore') return doAct(id, 'RESTORE');
+  if (act === 'delmsg') return confirm('Delete this message?') && doAct(id, 'DELETE_MESSAGE');
+  if (act === 'refund') return confirm('Mark as refunded and remove from the wall?') && doAct(id, 'REFUND');
+  if (act === 'addmethod') { const c = readCfg(); c.payment_methods.push({ name: '', instructions: '', link: '', countries: 'ALL' }); return renderSettings(c); }
+  if (act === 'rmmethod') { const c = readCfg(); c.payment_methods.splice(Number(v), 1); return renderSettings(c); }
+  if (act === 'savecfg') {
+    const c = readCfg(), m = $('#smsg');
+    if (!c.site_name || !c.headline || !(c.min_amount > 0) || !/^[A-Z]{3}$/.test(c.currency)) { m.style.color = '#dc2626'; m.textContent = 'Please check the fields.'; return; }
+    const { data, error } = await sb.from('settings').update(c).eq('id', 1).select().single();
+    if (error) { m.style.color = '#dc2626'; m.textContent = error.message; return; }
+    S = data; applySettings(); m.style.color = 'var(--acc)'; m.textContent = 'Saved ✓';
+  }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && (e.target.id === 'l-email' || e.target.id === 'l-pass')) document.querySelector('[data-act="login"]').click();
+  if (e.key === 'Escape') closeModal();
+});
+
+boot();
+</script>
+</body>
+</html>
